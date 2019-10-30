@@ -25,7 +25,7 @@ namespace BranchAndChicken.Api.Controllers
             return repo.Get(name);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public ActionResult<Trainer> GetById(int id)
         {
             throw new NotImplementedException();
@@ -42,7 +42,7 @@ namespace BranchAndChicken.Api.Controllers
             catch (Exception e)
             {
                 // do some stuff to handle the error
-                return StatusCode(500);
+                return StatusCode(500,e);
             }
         }
 
@@ -69,6 +69,11 @@ namespace BranchAndChicken.Api.Controllers
             };
 
             var trainerThatGotUpdated = repo.Update(updatedTrainer, id);
+
+            if (trainerThatGotUpdated == null)
+            {
+                return NotFound("Could not update trainer");
+            }
 
             return Ok(trainerThatGotUpdated);
         }
